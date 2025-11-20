@@ -6,9 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-
+use App\Services\ModuleService;
 class AuthController extends Controller
 {
+    protected ModuleService $moduleService;
+
+    public function __construct(ModuleService $moduleService)
+    {
+        $this->moduleService = $moduleService;
+    }
+
     // LOGIN
     public function login(Request $request)
     {
@@ -29,11 +36,16 @@ class AuthController extends Controller
         $user->tokens()->delete();
 
         // Creamos token
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('auth_token')->plainTextToken;
+        // Obtener módulos con permisos del usuario
+        $modules = $this->moduleService->getModulesByUser($user->id);
+       
 
         return response()->json([
-            'token' => $token,
-            'user'  => $user
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => $user,
+            'modules' => $modules,
         ]);
     }
 
