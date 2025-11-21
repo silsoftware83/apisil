@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Empleados\Directorio;
 
 use Illuminate\Http\Request;
-use App\Services\Personal\PersonalService;
+use App\Services\Empleados\Directorio\PersonalService;
 use Illuminate\Support\Facades\Log;
 class ColaboradoresController extends Controller
 {
@@ -17,9 +17,11 @@ class ColaboradoresController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $personal = $this->personalService->listar();
+        $perPage= $request->input('per_page', 5);
+        $filters = $request->input('active',1);
+        $personal = $this->personalService->listar($perPage, $filters);
         return response()->json($personal);
     }
 

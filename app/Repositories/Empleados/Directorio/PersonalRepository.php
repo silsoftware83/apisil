@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories\Personal;
+namespace App\Repositories\Empleados\Directorio;
 
 use App\Models\Personal;
 use Illuminate\Database\Eloquent\Collection;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Services\Personal;
+namespace App\Services\Empleados\Directorio;
 
 use App\Models\Personal;
-use App\Repositories\Personal\PersonalRepository;
+use App\Repositories\Empleados\Directorio\PersonalRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
