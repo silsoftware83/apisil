@@ -26,11 +26,12 @@ class PersonalRepository
      */
     public function paginate(int $perPage = 15, array $filters = []): LengthAwarePaginator
     {
-        $query = $this->model->with(['departamento', 'puesto', 'usuario']);
+       
+        $query = $this->model->newQuery();
 
         $query = $this->applyFilters($query, $filters);
 
-        return $query->latest()->paginate($perPage);
+        return $query->latest()->orderBy('id', 'asc')->paginate($perPage);
     }
 
     /**
@@ -93,6 +94,7 @@ class PersonalRepository
 
         return $personal->delete();
     }
+    
 
     /**
      * Restaurar personal eliminado

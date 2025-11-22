@@ -4,196 +4,160 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Personal extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'personal';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        // Datos personales
-        'nombre',
-        'apellido_paterno',
-        'apellido_materno',
-        'correo_electronico',
-        'telefono',
-        'telefono_emergencia',
-        'fecha_nacimiento',
-        'sexo',
-        'estado_civil',
-        'nacionalidad',
-        
-        // Domicilio
-        'direccion',
-        'colonia',
-        'ciudad',
-        'estado',
-        'pais',
-        'codigo_postal',
-        
-        // Datos laborales
-        'departamento_id',
-        'puesto_id',
-        'fecha_contratacion',
-        'fecha_baja',
-        'salario',
-        'bono',
-        'tipo_contrato',
-        'turno',
-        'estatus',
-        'dias_vacaciones',
-        'dias_restantes_vacaciones',
-        
-        // Datos fiscales
-        'nss',
+        'actualContract',
+        'dateContractFinish',
+        'name',
+        'lastName',
+        'activo',
+        'id_check',
+        'direction',
+        'cp',
+        'phone',
+        'birthday',
         'rfc',
         'curp',
+        'nss',
+        'school',
+        'ine',
+        'alergist',
+        'personalContact',
+        'phoneContact',
+        'empresa',
+        'puesto',
+        'ingreso',
+        'id_empleado',
+        'id_jefe_inmediato',
+        'id_departamento',
+        'inmBoss',
+        'wArea',
         'infonavit',
-        'numero_empleado',
-        'banco',
-        'numero_cuenta',
-        'clabe_interbancaria',
-        
-        // Información adicional
-        'foto',
-        'observaciones',
-        'es_supervisor',
-        'tiene_acceso_sistema',
-        'usuario_id',
-        
-        // Auditoría
-        'creado_por',
-        'actualizado_por',
+        'numCart',
+        'company',
+        'idLicNum',
+        'documents',
+        'contracts',
+        'documentsCompany',
+        'removeColaborator',
+        'img',
+        'numExt',
+        'utalla',
+        'numCarttwo',
+        'email',
+        'emailCompany',
+        'checkCode',
+        'ext_tel',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
     protected $casts = [
-        'fecha_nacimiento' => 'date',
-        'fecha_contratacion' => 'date',
-        'fecha_baja' => 'date',
-        'salario' => 'decimal:2',
-        'bono' => 'decimal:2',
-        'es_supervisor' => 'boolean',
-        'tiene_acceso_sistema' => 'boolean',
-        'dias_vacaciones' => 'integer',
-        'dias_restantes_vacaciones' => 'integer',
+        'dateContractFinish' => 'date',
+        'id_check' => 'date',
+        'birthday' => 'date',
+        'ingreso' => 'date',
+        'activo' => 'integer',
+        'cp' => 'integer',
+        'id_empleado' => 'integer',
+        'id_jefe_inmediato' => 'integer',
+        'id_departamento' => 'integer',
+        'contracts' => 'array', // Para manejar el JSON automáticamente
     ];
 
-    protected $hidden = [
-        'nss',
-        'rfc',
-        'curp',
-        'numero_cuenta',
-        'clabe_interbancaria',
-    ];
-
-    // Relaciones
-    public function departamento(): BelongsTo
+    /**
+     * Relación: Jefe inmediato (self-referencing)
+     */
+    public function jefeInmediato()
     {
-        return $this->belongsTo(Departamento::class, 'departamento_id');
+        return $this->belongsTo(Personal::class, 'id_jefe_inmediato');
+    }
+    /**
+     * Departamento al que pertenece el empleado
+     */
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'id_departamento');
     }
 
-    public function puesto(): BelongsTo
+    /**
+     * Relación: Empleados que reportan a este jefe
+     */
+    public function subordinados()
     {
-        return $this->belongsTo(Puesto::class, 'puesto_id');
+        return $this->hasMany(Personal::class, 'id_jefe_inmediato');
     }
 
-    public function usuario(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'usuario_id');
-    }
-
-    public function creadoPor(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'creado_por');
-    }
-
-    public function actualizadoPor(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'actualizado_por');
-    }
-
-    // Scopes
+    /**
+     * Scope: Solo empleados activos
+     */
     public function scopeActivos($query)
     {
-        return $query->where('estatus', 'activo');
+        return $query->where('activo', 1);
     }
 
-    public function scopeInactivos($query)
+    /**
+     * Scope: Por empresa
+     */
+    public function scopePorEmpresa($query, $empresa)
     {
-        return $query->where('estatus', 'inactivo');
+        return $query->where('empresa', $empresa);
     }
 
-    public function scopeBaja($query)
+    /**
+     * Scope: Por departamento
+     */
+    public function scopePorDepartamento($query, $idDepartamento)
     {
-        return $query->where('estatus', 'baja');
+        return $query->where('id_departamento', $idDepartamento);
     }
 
-    public function scopeSupervisores($query)
+    /**
+     * Accessor: Nombre completo
+     */
+    public function getNombreCompletoAttribute()
     {
-        return $query->where('es_supervisor', true);
+        return "{$this->name} {$this->lastName}";
     }
 
-    public function scopePorDepartamento($query, $departamentoId)
+    /**
+     * Accessor: Años de antigüedad
+     */
+    public function getAntiguedadAttribute()
     {
-        return $query->where('departamento_id', $departamentoId);
-    }
-
-    public function scopePorPuesto($query, $puestoId)
-    {
-        return $query->where('puesto_id', $puestoId);
-    }
-
-    // Accessors
-    public function getNombreCompletoAttribute(): string
-    {
-        return trim("{$this->nombre} {$this->apellido_paterno} {$this->apellido_materno}");
-    }
-
-    public function getDireccionCompletaAttribute(): string
-    {
-        $partes = array_filter([
-            $this->direccion,
-            $this->colonia,
-            $this->ciudad,
-            $this->estado,
-            $this->codigo_postal,
-            $this->pais,
-        ]);
-
-        return implode(', ', $partes);
-    }
-
-    public function getAntiguedadAttribute(): ?int
-    {
-        if (!$this->fecha_contratacion) {
+        if (!$this->ingreso) {
             return null;
         }
-
-        $fechaFin = $this->fecha_baja ?? now();
-        return $this->fecha_contratacion->diffInYears($fechaFin);
+        return now()->diffInYears($this->ingreso);
     }
 
-    public function getEdadAttribute(): ?int
+    /**
+     * Accessor: Edad
+     */
+    public function getEdadAttribute()
     {
-        return $this->fecha_nacimiento?->age;
-    }
-
-    // Métodos auxiliares
-    public function estaActivo(): bool
-    {
-        return $this->estatus === 'activo';
-    }
-
-    public function tieneVacacionesDisponibles(): bool
-    {
-        return $this->dias_restantes_vacaciones > 0;
-    }
-
-    public function puedeAccederAlSistema(): bool
-    {
-        return $this->tiene_acceso_sistema && $this->usuario_id !== null;
+        if (!$this->birthday) {
+            return null;
+        }
+        return now()->diffInYears($this->birthday);
     }
 }

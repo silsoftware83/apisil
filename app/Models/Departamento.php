@@ -2,56 +2,34 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Departamento extends Model
 {
     use HasFactory;
 
+    protected $table = 'departamentos';
+
     protected $fillable = [
         'nombre',
-        'codigo',
         'descripcion',
-        'jefe_id',
-        'activo',
-    ];
-
-    protected $casts = [
-        'activo' => 'boolean',
+        'id_jefe_area'
     ];
 
     /**
-     * Relación con el jefe del departamento (Personal)
+     * Jefe del área (un empleado)
      */
-    public function jefe(): BelongsTo
+    public function jefeArea()
     {
-        return $this->belongsTo(Personal::class, 'jefe_id');
+        return $this->belongsTo(Personal::class, 'id_jefe_area');
     }
 
     /**
-     * Relación con los puestos del departamento
+     * Personal que pertenece al departamento
      */
-    public function puestos(): HasMany
+    public function empleados()
     {
-        return $this->hasMany(Puesto::class);
-    }
-
-    /**
-     * Relación con el personal del departamento
-     */
-    public function personal(): HasMany
-    {
-        return $this->hasMany(Personal::class);
-    }
-
-    /**
-     * Scope para departamentos activos
-     */
-    public function scopeActivos($query)
-    {
-        return $query->where('activo', true);
+        return $this->hasMany(Personal::class, 'id_departamento');
     }
 }
