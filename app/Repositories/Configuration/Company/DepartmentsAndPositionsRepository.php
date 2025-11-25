@@ -168,6 +168,6 @@ class DepartmentsAndPositionsRepository
 
     public function getActiveUsers(): Collection
     {
-        return $this->modelPersonal->where('activo', true)->get();
+        return $this->modelPersonal->where('activo', true)->select('id', 'name', 'lastName')->get();
     }
 }

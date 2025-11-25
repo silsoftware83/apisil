@@ -1,34 +1,36 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Configuarcion;
 
-use App\Models\Departments;
+use App\Http\Controllers\Controller;
+use App\Models\Departamento;
 use Illuminate\Http\Request;
 use App\Services\Configuration\Company\DepartmentsAndPositionsService;
 
 class DepartmentsController extends Controller
 {
-     protected  $service;
+    protected  $service;
 
-     public function __construct( DepartmentsAndPositionsService $service) {
+    public function __construct(DepartmentsAndPositionsService $service)
+    {
         $this->service = $service;
-        
     }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       try {
-          
+        try {
+
 
             $departments = $this->service->getAll(['puestos', 'jefe', 'personal']);
+            $personal = $this->service->getActiveUsers();
             return response()->json([
                 'success' => true,
                 'message' => 'departamentos obtenidos exitosamente.',
-                'data' => $departments
+                'data' => $departments,
+                'personal' => $personal
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -57,7 +59,7 @@ class DepartmentsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Departments $departments)
+    public function show(Departamento $departments)
     {
         //
     }
@@ -65,7 +67,7 @@ class DepartmentsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Departments $departments)
+    public function edit(Departamento $departments)
     {
         //
     }
@@ -73,7 +75,7 @@ class DepartmentsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Departments $departments)
+    public function update(Request $request, Departamento $departments)
     {
         //
     }
@@ -81,14 +83,14 @@ class DepartmentsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Departments $departments)
+    public function destroy(Departamento $departments)
     {
         //
     }
     public function getActiveUsers()
     {
-       try {
-          
+        try {
+
 
             $departments = $this->service->getActiveUsers();
             return response()->json([
@@ -96,7 +98,6 @@ class DepartmentsController extends Controller
                 'message' => 'usuarios activos obtenidos exitosamente.',
                 'data' => $departments
             ], 200);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
