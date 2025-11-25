@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 22-11-2025 a las 06:38:29
+-- Tiempo de generación: 25-11-2025 a las 06:07:36
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,6 +20,108 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `sil83database`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cache`
+--
+
+CREATE TABLE `cache` (
+  `key` varchar(255) NOT NULL,
+  `value` mediumtext NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cache_locks`
+--
+
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) NOT NULL,
+  `owner` varchar(255) NOT NULL,
+  `expiration` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `departamentos`
+--
+
+CREATE TABLE `departamentos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `id_jefe_area` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `failed_jobs`
+--
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `jobs`
+--
+
+CREATE TABLE `jobs` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `queue` varchar(255) NOT NULL,
+  `payload` longtext NOT NULL,
+  `attempts` tinyint(3) UNSIGNED NOT NULL,
+  `reserved_at` int(10) UNSIGNED DEFAULT NULL,
+  `available_at` int(10) UNSIGNED NOT NULL,
+  `created_at` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `job_batches`
+--
+
+CREATE TABLE `job_batches` (
+  `id` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `total_jobs` int(11) NOT NULL,
+  `pending_jobs` int(11) NOT NULL,
+  `failed_jobs` int(11) NOT NULL,
+  `failed_job_ids` longtext NOT NULL,
+  `options` mediumtext DEFAULT NULL,
+  `cancelled_at` int(11) DEFAULT NULL,
+  `created_at` int(11) NOT NULL,
+  `finished_at` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `migrations`
+--
+
+CREATE TABLE `migrations` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `migrations`
@@ -38,6 +140,26 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (14, '2025_11_22_045238_create_puestos_table', 5),
 (15, '2025_11_22_045342_id_puesto_add', 5);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `modules`
+--
+
+CREATE TABLE `modules` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `route` varchar(255) DEFAULT NULL,
+  `order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Volcado de datos para la tabla `modules`
 --
@@ -53,6 +175,73 @@ INSERT INTO `modules` (`id`, `name`, `slug`, `description`, `icon`, `route`, `or
 (8, 'Reportes y Analítica', 'reportes', 'Reportes e indicadores de RRHH', 'ChartBar', '/reportes', 8, 1, '2025-10-25 15:54:52', '2025-10-25 15:54:52', NULL),
 (9, 'Configuración', 'configuracion', 'Configuración del sistema', 'Settings', '/configuracion', 9, 1, '2025-10-25 15:54:53', '2025-10-25 15:54:53', NULL),
 (10, 'Home', 'Dashboard', 'Modulo que contiene los home de administrador y de recursos humanos', 'House', NULL, 0, 1, '2025-11-20 23:45:21', '2025-11-20 23:45:30', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `password_reset_tokens`
+--
+
+CREATE TABLE `password_reset_tokens` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal`
+--
+
+CREATE TABLE `personal` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `actualContract` varchar(20) NOT NULL DEFAULT 'Prueba',
+  `dateContractFinish` date DEFAULT NULL,
+  `name` varchar(30) DEFAULT NULL,
+  `lastName` varchar(50) DEFAULT NULL,
+  `activo` int(11) NOT NULL DEFAULT 1,
+  `id_check` date DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `direction` varchar(200) DEFAULT NULL,
+  `cp` int(11) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `birthday` date DEFAULT NULL,
+  `rfc` varchar(20) DEFAULT NULL,
+  `curp` varchar(20) DEFAULT NULL,
+  `nss` varchar(20) DEFAULT NULL,
+  `school` varchar(20) DEFAULT NULL,
+  `ine` varchar(50) DEFAULT NULL,
+  `alergist` varchar(100) DEFAULT NULL,
+  `personalContact` varchar(200) DEFAULT NULL,
+  `phoneContact` varchar(30) DEFAULT NULL,
+  `empresa` varchar(25) DEFAULT NULL,
+  `puesto` varchar(250) DEFAULT NULL,
+  `ingreso` date DEFAULT NULL,
+  `id_empleado` int(11) DEFAULT 0,
+  `id_jefe_inmediato` int(11) DEFAULT NULL,
+  `id_departamento` int(11) DEFAULT NULL,
+  `id_puesto` bigint(20) UNSIGNED DEFAULT NULL,
+  `inmBoss` varchar(250) NOT NULL DEFAULT 'No especificado',
+  `wArea` varchar(250) DEFAULT NULL,
+  `infonavit` varchar(50) DEFAULT NULL,
+  `numCart` varchar(35) DEFAULT NULL,
+  `company` varchar(30) DEFAULT NULL,
+  `idLicNum` varchar(50) DEFAULT NULL,
+  `documents` varchar(220) DEFAULT NULL,
+  `contracts` varchar(500) NOT NULL DEFAULT '[]',
+  `documentsCompany` varchar(220) DEFAULT NULL,
+  `removeColaborator` varchar(300) DEFAULT NULL,
+  `img` varchar(100) NOT NULL DEFAULT 'https://th.bing.com/th/id/OIP.4-g8iHzmoxK1nsA0zc0oXwHaHa?pid=ImgDet&rs=1',
+  `numExt` varchar(50) DEFAULT NULL,
+  `utalla` varchar(100) DEFAULT NULL,
+  `numCarttwo` varchar(50) DEFAULT NULL,
+  `email` varchar(50) NOT NULL DEFAULT 'email@email.com',
+  `emailCompany` varchar(60) DEFAULT NULL,
+  `checkCode` varchar(10) DEFAULT NULL,
+  `ext_tel` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `personal`
@@ -249,12 +438,84 @@ INSERT INTO `personal` (`id`, `actualContract`, `dateContractFinish`, `name`, `l
 (197, 'Prueba', NULL, 'CRISTINA', 'LUIS SILVA', 1, NULL, '2025-03-13 22:10:39', '2025-03-13 22:17:22', 'MZ 23 LT6 #38 C NUBE CP 000 PNC MISION DE LAS FLORES FCP 77723 SOLIDARIDAD Q.R.', 77723, NULL, NULL, 'LUSC980711DL3', 'LUSC980711MVZSLR06', '17149812574', 'Licenciatura', 'IDMEX1598803002', NULL, NULL, NULL, 'RHR83SC', NULL, '2025-03-18', NULL, NULL, NULL, NULL, '{\"label\":\"TAHIMY VLADAMIR POOL KU\",\"value\":70}', NULL, NULL, NULL, NULL, NULL, NULL, '[]', NULL, NULL, 'https://th.bing.com/th/id/OIP.4-g8iHzmoxK1nsA0zc0oXwHaHa?pid=ImgDet&rs=1', NULL, NULL, NULL, 'crissluis98@gmail.com', NULL, NULL, NULL),
 (198, 'Prueba', NULL, 'DIANA ROSY', 'BAAK HOMA', 1, NULL, '2025-03-13 22:19:50', '2025-03-13 22:19:50', 'CALLE AVESTRUCES MZA 73 LOTE L PALMAS 1 CP 77723 SOLIDARIDAD Q.R.', 77723, NULL, '1999-07-27', 'BAHD990727LI1', 'BAHD990727MYNKMN06', '20169998646', 'Licenciatura', 'IDMEX1641863074', NULL, NULL, NULL, 'RHRVIVIENDASC', NULL, '2025-03-18', NULL, NULL, NULL, NULL, '{\"label\":\"LUCIO FLORES HERRERA\",\"value\":191}', NULL, NULL, NULL, NULL, NULL, NULL, '[]', NULL, NULL, 'https://th.bing.com/th/id/OIP.4-g8iHzmoxK1nsA0zc0oXwHaHa?pid=ImgDet&rs=1', NULL, NULL, NULL, 'dianabaakhoma@gmail.com', NULL, NULL, NULL);
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `personal_access_tokens`
+--
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) UNSIGNED NOT NULL,
+  `name` text NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `expires_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Volcado de datos para la tabla `personal_access_tokens`
 --
 
 INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
-(5, 'App\\Models\\User', 1, 'auth_token', '697934e0cee2363930a91508e1d064786e7d95d399fed787f2773b894565b924', '[\"*\"]', '2025-11-22 10:11:47', NULL, '2025-11-22 03:36:05', '2025-11-22 10:11:47');
+(10, 'App\\Models\\User', 1, 'auth_token', '0ecb5cff4d74d7645bc711a9e36e08802e1893ee0909d7809c8be62571da22b7', '[\"*\"]', '2025-11-25 10:03:23', NULL, '2025-11-25 05:52:56', '2025-11-25 10:03:23');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `puestos`
+--
+
+CREATE TABLE `puestos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `id_departamento` bigint(20) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `submodules`
+--
+
+CREATE TABLE `submodules` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `module_id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `icon` varchar(255) DEFAULT NULL,
+  `route` varchar(255) DEFAULT NULL,
+  `order` int(11) NOT NULL DEFAULT 0,
+  `is_active` tinyint(1) NOT NULL DEFAULT 1,
+  `parent_submodule_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `level` int(11) NOT NULL DEFAULT 1,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `submodules`
@@ -324,6 +585,28 @@ INSERT INTO `submodules` (`id`, `module_id`, `name`, `slug`, `description`, `ico
 (61, 9, 'Integraciones', 'config-integraciones', NULL, 'Plug', '/configuracion/integraciones', 4, 1, NULL, 1, '2025-10-25 15:54:53', '2025-10-25 15:54:53', NULL),
 (62, 10, 'Adminisrador', 'Home de administrador', 'pantalla home de administrador', 'House', '/home_admin', 0, 1, NULL, 1, '2025-11-20 23:48:32', '2025-11-20 23:48:38', NULL),
 (63, 10, 'Colaborador', 'Home de colaborador', 'Pantalla de inicio del colaborador', 'House', '/home_colaborator', 1, 1, NULL, 1, '2025-11-20 23:50:24', '2025-11-20 23:50:30', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `users`
+--
+
+CREATE TABLE `users` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `id_personal` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `passwordLetter` varchar(10) DEFAULT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `device` varchar(50) DEFAULT NULL,
+  `deviceOffice` varchar(50) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `users`
@@ -495,6 +778,26 @@ INSERT INTO `users` (`id`, `id_personal`, `name`, `email`, `email_verified_at`, 
 (188, 195, 'MARÍA MAGDALENA', 'mmgr22@hotmail.com', NULL, '$2y$10$a8F1O6cZASFGU3/Fc3lQ9uPB4F/rCQbcZQkf5pAWKd3uXS2ZZvXoy', 'sxDbaJgR', 1, NULL, NULL, NULL, '2025-03-08 03:46:16', '2025-03-08 03:46:16'),
 (189, 196, 'VALENTIN', 'vidalvalentin65@gmail.com', NULL, '$2y$10$C5EmnFdjNI/wwACcS1M/T.19peyeCh/HPxofuFYlmedEFMKo8fcR6', 'tEYFqOBP', 1, NULL, NULL, NULL, '2025-03-08 03:46:31', '2025-03-08 03:46:31');
 
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `user_module_access`
+--
+
+CREATE TABLE `user_module_access` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` bigint(20) UNSIGNED NOT NULL,
+  `module_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `submodule_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `subsubmodule_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `can_view` tinyint(1) NOT NULL DEFAULT 0,
+  `can_create` tinyint(1) NOT NULL DEFAULT 0,
+  `can_edit` tinyint(1) NOT NULL DEFAULT 0,
+  `can_delete` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 --
 -- Volcado de datos para la tabla `user_module_access`
 --
@@ -572,6 +875,241 @@ INSERT INTO `user_module_access` (`id`, `user_id`, `module_id`, `submodule_id`, 
 (101, 1, 9, 54, 58, 1, 1, 1, 1, '2025-10-25 10:58:51', '2025-10-25 10:58:51'),
 (102, 1, 10, 62, NULL, 1, 1, 1, 1, '2025-11-20 23:50:53', '2025-11-20 23:50:53'),
 (103, 1, 10, 63, NULL, 1, 1, 1, 1, '2025-11-20 23:53:03', '2025-11-20 23:53:03');
+
+--
+-- Índices para tablas volcadas
+--
+
+--
+-- Indices de la tabla `cache`
+--
+ALTER TABLE `cache`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indices de la tabla `cache_locks`
+--
+ALTER TABLE `cache_locks`
+  ADD PRIMARY KEY (`key`);
+
+--
+-- Indices de la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `departamentos_id_jefe_area_foreign` (`id_jefe_area`);
+
+--
+-- Indices de la tabla `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indices de la tabla `jobs`
+--
+ALTER TABLE `jobs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `jobs_queue_index` (`queue`);
+
+--
+-- Indices de la tabla `job_batches`
+--
+ALTER TABLE `job_batches`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `modules`
+--
+ALTER TABLE `modules`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `modules_slug_unique` (`slug`),
+  ADD KEY `modules_order_index` (`order`);
+
+--
+-- Indices de la tabla `password_reset_tokens`
+--
+ALTER TABLE `password_reset_tokens`
+  ADD PRIMARY KEY (`email`);
+
+--
+-- Indices de la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `personal_activo_index` (`activo`),
+  ADD KEY `personal_id_empleado_index` (`id_empleado`),
+  ADD KEY `personal_empresa_index` (`empresa`),
+  ADD KEY `personal_ingreso_index` (`ingreso`),
+  ADD KEY `personal_id_jefe_inmediato_index` (`id_jefe_inmediato`),
+  ADD KEY `personal_id_departamento_index` (`id_departamento`),
+  ADD KEY `personal_id_puesto_foreign` (`id_puesto`);
+
+--
+-- Indices de la tabla `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`),
+  ADD KEY `personal_access_tokens_expires_at_index` (`expires_at`);
+
+--
+-- Indices de la tabla `puestos`
+--
+ALTER TABLE `puestos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `puestos_id_departamento_foreign` (`id_departamento`);
+
+--
+-- Indices de la tabla `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
+
+--
+-- Indices de la tabla `submodules`
+--
+ALTER TABLE `submodules`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `submodules_slug_unique` (`slug`),
+  ADD KEY `submodules_module_id_index` (`module_id`),
+  ADD KEY `submodules_parent_submodule_id_index` (`parent_submodule_id`),
+  ADD KEY `submodules_order_index` (`order`);
+
+--
+-- Indices de la tabla `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `user_module_access`
+--
+ALTER TABLE `user_module_access`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_module_access` (`user_id`,`module_id`,`submodule_id`,`subsubmodule_id`),
+  ADD KEY `user_module_access_module_id_foreign` (`module_id`),
+  ADD KEY `user_module_access_submodule_id_foreign` (`submodule_id`),
+  ADD KEY `user_module_access_user_id_module_id_index` (`user_id`,`module_id`),
+  ADD KEY `user_module_access_user_id_submodule_id_index` (`user_id`,`submodule_id`),
+  ADD KEY `user_module_access_user_id_subsubmodule_id_index` (`user_id`,`subsubmodule_id`);
+
+--
+-- AUTO_INCREMENT de las tablas volcadas
+--
+
+--
+-- AUTO_INCREMENT de la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `failed_jobs`
+--
+ALTER TABLE `failed_jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `jobs`
+--
+ALTER TABLE `jobs`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT de la tabla `modules`
+--
+ALTER TABLE `modules`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `personal`
+--
+ALTER TABLE `personal`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=199;
+
+--
+-- AUTO_INCREMENT de la tabla `personal_access_tokens`
+--
+ALTER TABLE `personal_access_tokens`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `puestos`
+--
+ALTER TABLE `puestos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `submodules`
+--
+ALTER TABLE `submodules`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+
+--
+-- AUTO_INCREMENT de la tabla `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=190;
+
+--
+-- AUTO_INCREMENT de la tabla `user_module_access`
+--
+ALTER TABLE `user_module_access`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `departamentos`
+--
+ALTER TABLE `departamentos`
+  ADD CONSTRAINT `departamentos_id_jefe_area_foreign` FOREIGN KEY (`id_jefe_area`) REFERENCES `personal` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `personal`
+--
+ALTER TABLE `personal`
+  ADD CONSTRAINT `personal_id_puesto_foreign` FOREIGN KEY (`id_puesto`) REFERENCES `puestos` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `puestos`
+--
+ALTER TABLE `puestos`
+  ADD CONSTRAINT `puestos_id_departamento_foreign` FOREIGN KEY (`id_departamento`) REFERENCES `departamentos` (`id`) ON DELETE SET NULL;
+
+--
+-- Filtros para la tabla `submodules`
+--
+ALTER TABLE `submodules`
+  ADD CONSTRAINT `submodules_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `submodules_parent_submodule_id_foreign` FOREIGN KEY (`parent_submodule_id`) REFERENCES `submodules` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `user_module_access`
+--
+ALTER TABLE `user_module_access`
+  ADD CONSTRAINT `user_module_access_module_id_foreign` FOREIGN KEY (`module_id`) REFERENCES `modules` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_module_access_submodule_id_foreign` FOREIGN KEY (`submodule_id`) REFERENCES `submodules` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `user_module_access_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
