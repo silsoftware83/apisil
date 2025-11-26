@@ -12,20 +12,12 @@ class Puesto extends Model
     use HasFactory;
 
     protected $fillable = [
-        'departamento_id',
-        'nombre',
-        'codigo',
-        'nivel',
-        'descripcion',
-        'salario_min',
-        'salario_max',
-        'activo',
-    ];
 
-    protected $casts = [
-        'salario_min' => 'decimal:2',
-        'salario_max' => 'decimal:2',
-        'activo' => 'boolean',
+        'nombre',
+        'descripcion',
+        'level',
+        'id_departamento',
+
     ];
 
     /**

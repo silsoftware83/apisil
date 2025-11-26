@@ -53,7 +53,21 @@ class DepartmentsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $data = $request->all();
+            $department = $this->service->create($data);
+            return response()->json([
+                'success' => true,
+                'message' => 'departamento creado exitosamente.',
+                'data' => $department
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear el departamento.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

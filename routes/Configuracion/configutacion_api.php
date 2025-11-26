@@ -10,5 +10,6 @@ Route::prefix('configuracion')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/departamentos', [DepartmentsController::class, 'index']);
+        Route::post('/departamentos', [DepartmentsController::class, 'store']);
     });
 });

@@ -96,20 +96,20 @@ class DepartmentsAndPositionsService
     public function create(array $data): Departamento
     {
         DB::beginTransaction();
-        
+
         try {
             // Aquí puedes agregar validaciones de negocio adicionales
             $this->validateData($data);
-            
+
             // Aquí puedes procesar los datos antes de crear
             $processedData = $this->processDataForCreate($data);
-            
+
             $departmentPosition = $this->repository->create($processedData);
-            
+
             DB::commit();
-            
+
             Log::info("Department and position created successfully with ID: {$departmentPosition->id}");
-            
+
             return $departmentPosition;
         } catch (Exception $e) {
             DB::rollBack();
@@ -128,23 +128,23 @@ class DepartmentsAndPositionsService
     public function update(int $id, array $data): bool
     {
         DB::beginTransaction();
-        
+
         try {
             // Verificar que existe
             $this->repository->findByIdOrFail($id);
-            
+
             // Validar datos
             $this->validateData($data, $id);
-            
+
             // Procesar datos
             $processedData = $this->processDataForUpdate($data);
-            
+
             $result = $this->repository->update($id, $processedData);
-            
+
             DB::commit();
-            
+
             Log::info("Department and position updated successfully with ID: {$id}");
-            
+
             return $result;
         } catch (Exception $e) {
             DB::rollBack();
@@ -162,20 +162,20 @@ class DepartmentsAndPositionsService
     public function delete(int $id): bool
     {
         DB::beginTransaction();
-        
+
         try {
             // Verificar que existe
             $this->repository->findByIdOrFail($id);
-            
+
             // Aquí puedes agregar validaciones antes de eliminar
             $this->validateDelete($id);
-            
+
             $result = $this->repository->delete($id);
-            
+
             DB::commit();
-            
+
             Log::info("Department and position deleted successfully with ID: {$id}");
-            
+
             return $result;
         } catch (Exception $e) {
             DB::rollBack();
@@ -226,11 +226,15 @@ class DepartmentsAndPositionsService
      */
     protected function validateData(array $data, ?int $id = null): void
     {
-        // Implementa aquí tus validaciones de lógica de negocio
-        // Ejemplo:
-        // if (empty($data['name'])) {
-        //     throw new Exception('Name is required');
-        // }
+        if (empty($data['name'])) {
+            throw new Exception('Name is required');
+        }
+        if (empty($data['manager']) || !is_numeric($data['manager'])) {
+            throw new Exception('Manager is required');
+        }
+        if (count($data['positions']) == 0) {
+            throw new Exception('Positions are required');
+        }
     }
 
     /**
@@ -241,9 +245,12 @@ class DepartmentsAndPositionsService
      */
     protected function processDataForCreate(array $data): array
     {
-        // Aquí puedes transformar o procesar los datos antes de crear
-        // Ejemplo: formatear fechas, limpiar strings, etc.
-        
+        $data['nombre'] = $data['name'];
+        $data['descripcion'] = $data['description'];
+        $data['id_jefe_area'] = $data['manager'];
+
+        $data['positions'] = $data['positions'];
+
         return $data;
     }
 
@@ -256,7 +263,7 @@ class DepartmentsAndPositionsService
     protected function processDataForUpdate(array $data): array
     {
         // Aquí puedes transformar o procesar los datos antes de actualizar
-        
+
         return $data;
     }
 

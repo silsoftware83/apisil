@@ -3,6 +3,7 @@
 namespace App\Repositories\Configuration\Company;
 
 use App\Models\Departamento;
+use App\Models\Puesto;
 use App\Models\Personal;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -14,17 +15,20 @@ class DepartmentsAndPositionsRepository
      */
     protected $model;
     protected $modelPersonal;
+    protected $modelPuesto;
 
     /**
      * DepartmentsAndPositionsRepository constructor.
      *
      * @param Departamento $model
      * @param Personal $modelPersonal
+     * @param Puesto $modelPuesto
      */
-    public function __construct(Departamento $model, Personal $modelPersonal)
+    public function __construct(Departamento $model, Personal $modelPersonal, Puesto $modelPuesto)
     {
         $this->model = $model;
         $this->modelPersonal = $modelPersonal;
+        $this->modelPuesto = $modelPuesto;
     }
 
     /**
@@ -82,7 +86,23 @@ class DepartmentsAndPositionsRepository
      */
     public function create(array $data): Departamento
     {
-        return $this->model->create($data);
+        $depratamento = $this->model->create([
+            'nombre' => $data['nombre'],
+            'descripcion' => $data['descripcion'],
+            'id_jefe_area' => $data['id_jefe_area'],
+        ]);
+
+        if ($depratamento['id'] > 0) {
+            foreach ($data['puestos'] as $puesto) {
+                $this->modelPuesto->create([
+                    'id_departamento' => $depratamento['id'],
+                    'nombre' => $puesto['nombre'],
+                    'descripcion' => $puesto['descripcion'],
+                    'level' => $puesto['level'],
+                ]);
+            }
+        }
+        return $depratamento;
     }
 
     /**
