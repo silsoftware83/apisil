@@ -93,10 +93,10 @@ class DepartmentsAndPositionsRepository
         ]);
 
         if ($depratamento['id'] > 0) {
-            foreach ($data['puestos'] as $puesto) {
+            foreach ($data['positions'] as $puesto) {
                 $this->modelPuesto->create([
                     'id_departamento' => $depratamento['id'],
-                    'nombre' => $puesto['nombre'],
+                    'nombre' => $puesto['title<'],
                     'descripcion' => $puesto['descripcion'],
                     'level' => $puesto['level'],
                 ]);
