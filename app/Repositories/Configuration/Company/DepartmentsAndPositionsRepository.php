@@ -96,8 +96,9 @@ class DepartmentsAndPositionsRepository
             foreach ($data['positions'] as $puesto) {
                 $this->modelPuesto->create([
                     'id_departamento' => $depratamento['id'],
-                    'nombre' => $puesto['title<'],
-                    'descripcion' => $puesto['descripcion'],
+                    'nombre' => $puesto['title'],
+                    'descripcion' => $puesto['description'],
+
                     'level' => $puesto['level'],
                 ]);
             }
