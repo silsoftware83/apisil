@@ -33,7 +33,7 @@ class Puesto extends Model
      */
     public function personal(): HasMany
     {
-        return $this->hasMany(Personal::class);
+        return $this->hasMany(Personal::class, 'id_puesto')->where('activo', 1);;
     }
 
     /**

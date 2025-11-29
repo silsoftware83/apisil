@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Puesto;
+
 class Personal extends Model
 {
     use HasFactory;
@@ -159,5 +161,9 @@ class Personal extends Model
             return null;
         }
         return now()->diffInYears($this->birthday);
+    }
+    public function puesto()
+    {
+        return $this->belongsTo(Puesto::class, 'id_puesto');
     }
 }

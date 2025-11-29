@@ -23,7 +23,7 @@ class DepartmentsController extends Controller
         try {
 
 
-            $departments = $this->service->getAll(['puestos', 'jefe', 'personal']);
+            $departments = $this->service->getAll(['puestos.personal', 'jefe', 'personal']);
             $personal = $this->service->getActiveUsers();
             return response()->json([
                 'success' => true,
