@@ -226,13 +226,13 @@ class DepartmentsAndPositionsService
      */
     protected function validateData(array $data, ?int $id = null): void
     {
-        if (empty($data['name'])) {
+        if (empty($data['nombre'])) {
             throw new Exception('Name is required');
         }
         if (empty($data['manager']) || !is_numeric($data['manager'])) {
             throw new Exception('Manager is required');
         }
-        if (count($data['positions']) == 0) {
+        if (count($data['puestos']) == 0) {
             throw new Exception('Positions are required');
         }
     }
@@ -245,11 +245,11 @@ class DepartmentsAndPositionsService
      */
     protected function processDataForCreate(array $data): array
     {
-        $data['nombre'] = $data['name'];
-        $data['descripcion'] = $data['description'];
+        $data['nombre'] = $data['nombre'];
+        $data['descripcion'] = $data['descripcion'];
         $data['id_jefe_area'] = $data['manager'];
 
-        $data['positions'] = $data['positions'];
+        $data['positions'] = $data['puestos'];
 
         return $data;
     }
